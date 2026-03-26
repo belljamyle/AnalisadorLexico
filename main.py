@@ -1,16 +1,61 @@
-# This is a sample Python script.
+def geradorToken(linha):
+    tokens = []
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+    i = 0
 
+    while i < len(linha):
+        char = linha[i]
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+        if char == " ":
+            i += 1
+            continue
 
+        if char.isdigit():
+            num = ""
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+            while linha[i] != " ":
+                num += linha[i]
+                i += 1
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+            tokens.append(("NUMBER", num))
+            continue
+
+        if char in ['+', '-', '*', '/', '%', '^']:
+
+            if char == '/' and linha[i + 1] == '/':
+                tokens.append(("OP", "//"))
+                i += 2
+                continue
+
+            tokens.append(("OP", char))
+            i += 1
+            continue
+
+        if char == '(':
+            tokens.append(("LPARENT", char))
+            i += 1
+            continue
+
+        if char == ')':
+            tokens.append(("RPARENT", char))
+            i += 1
+            continue
+
+        if char.isaplha():
+            word = ""
+
+            while linha[i] != " ":
+                word += linha[i]
+                i += 1
+
+            if word == "RES":
+                tokens.append(("RES", word))
+            elif word == "MEM":
+                tokens.append(("MEM", word))
+            else:
+                print("Palavra desconhecida!")
+
+            continue
+
+    return tokens
+
